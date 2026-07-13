@@ -1,6 +1,27 @@
 # AI Agent 工程面试题库
 
-面向 AI Agent 岗位求职者的工程化面试题库项目。
+面向 AI Agent 岗位求职者的工程化面试题库项目（VitePress 静态站 + Git 内容仓库）。
+
+## 本地开发
+
+```bash
+npm install
+npm run dev      # 本地预览 http://localhost:5173/agent-interview/
+npm run build    # 构建静态站到 .vitepress/dist
+```
+
+## 部署（GitHub Pages）
+
+已配置 `.github/workflows/deploy.yml`，push 到 `main` 分支自动构建部署。生效前提：
+
+1. 仓库为 **public**（私有仓库的 Pages 需要 GitHub Pro/Team 付费版）；
+2. 仓库 Settings → Pages → Source 选择 **GitHub Actions**。
+
+部署后访问地址：`https://smiletat.github.io/agent-interview/`
+
+## 如何贡献题目
+
+见 [docs/question-template.md](docs/question-template.md)：在 `questions/<主题目录>/` 下按模板新建 Markdown 文件，提交 PR，审校通过后自动发布。
 
 ## 文档索引
 
