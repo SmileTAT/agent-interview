@@ -2,7 +2,8 @@ name: Deploy VitePress site to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # claude/* 为当前默认分支的临时触发；建立 main 分支后可删除
+    branches: [main, 'claude/ai-agent-interview-prd-khg4hs']
   workflow_dispatch:
 
 permissions:
@@ -24,6 +25,8 @@ jobs:
           node-version: 22
           cache: npm
       - uses: actions/configure-pages@v4
+        with:
+          enablement: true
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
