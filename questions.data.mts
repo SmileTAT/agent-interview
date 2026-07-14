@@ -17,7 +17,7 @@ export { data }
 export default createContentLoader('questions/**/*.md', {
   transform(raw): QuestionItem[] {
     return raw
-      .filter((page) => page.frontmatter.title)
+      .filter((page) => page.frontmatter.title && !page.frontmatter.exclude)
       .map(({ url, frontmatter }) => ({
         url,
         title: frontmatter.title as string,

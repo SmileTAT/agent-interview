@@ -14,6 +14,7 @@ const TOPIC_DIRS: [string, string][] = [
   ['frameworks', '框架与工程实战'],
   ['foundations', '交叉基础'],
   ['system-design', '系统设计真题专区'],
+  ['company-deepseek', 'DeepSeek 面经专题'],
 ]
 
 function questionSidebar() {
