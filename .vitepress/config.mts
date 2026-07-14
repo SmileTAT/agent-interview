@@ -1,4 +1,40 @@
 import { defineConfig } from 'vitepress'
+import fs from 'node:fs'
+import path from 'node:path'
+
+const TOPIC_DIRS: [string, string][] = [
+  ['agent-basics', 'Agent 基础与推理模式'],
+  ['tool-use-mcp', '工具调用与 MCP'],
+  ['context-engineering', '上下文工程'],
+  ['memory', '记忆系统'],
+  ['multi-agent', '多智能体系统'],
+  ['agentic-rag', 'Agentic RAG'],
+  ['evals', '评测与可观测'],
+  ['safety', '安全与护栏'],
+  ['frameworks', '框架与工程实战'],
+  ['foundations', '交叉基础'],
+  ['system-design', '系统设计真题专区'],
+]
+
+function questionSidebar() {
+  const root = path.resolve(process.cwd(), 'questions')
+  return TOPIC_DIRS.filter(([dir]) => fs.existsSync(path.join(root, dir))).map(
+    ([dir, text]) => ({
+      text,
+      collapsed: true,
+      items: fs
+        .readdirSync(path.join(root, dir))
+        .filter((f) => f.endsWith('.md'))
+        .sort()
+        .map((f) => {
+          const src = fs.readFileSync(path.join(root, dir, f), 'utf-8')
+          const m = src.match(/^title:\s*(.+)$/m)
+          const title = m ? m[1].trim().replace(/^["']|["']$/g, '') : f
+          return { text: title, link: `/questions/${dir}/${f.replace(/\.md$/, '')}` }
+        }),
+    }),
+  )
+}
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -13,39 +49,7 @@ export default defineConfig({
       { text: 'PRD', link: '/docs/prd-ai-agent-question-bank-v2.0' },
     ],
     sidebar: {
-      '/questions/': [
-        {
-          text: 'Agent 基础与推理模式',
-          items: [
-            { text: 'ReAct 范式是什么？', link: '/questions/agent-basics/what-is-react' },
-          ],
-        },
-        {
-          text: '工具调用与 MCP',
-          items: [
-            { text: 'MCP 与 Function Calling 的关系', link: '/questions/tool-use-mcp/mcp-vs-function-calling' },
-            { text: '排查：工具调用死循环', link: '/questions/tool-use-mcp/tool-call-loop-debug' },
-          ],
-        },
-        {
-          text: 'Agentic RAG',
-          items: [
-            { text: '传统 RAG vs Agentic RAG', link: '/questions/agentic-rag/rag-vs-agentic-rag' },
-          ],
-        },
-        {
-          text: '评测与可观测',
-          items: [
-            { text: '为什么要做轨迹级评测？', link: '/questions/evals/trajectory-evals' },
-          ],
-        },
-        {
-          text: '系统设计真题专区',
-          items: [
-            { text: '设计企业级智能客服 Agent', link: '/questions/system-design/customer-service-agent' },
-          ],
-        },
-      ],
+      '/questions/': questionSidebar(),
     },
     search: { provider: 'local' },
     outline: { label: '本页目录', level: [2, 3] },
